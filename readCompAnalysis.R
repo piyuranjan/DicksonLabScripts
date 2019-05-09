@@ -2,6 +2,7 @@
 
 packages<-c("tidyverse","grid","gridExtra")
 tmp<-lapply(packages,function(x) suppressPackageStartupMessages(require(x,character.only=T)))
+#options(readr.num_columns=0) #suppress runtime output for read_delim and other functions
 
 Preprocess<-function(compFile,percentFilter=0.005)
 	{
@@ -28,13 +29,14 @@ AreaPlot<-function(df,zoomLen=NULL)
 	if(!is.null(zoomLen)){df<-dplyr::filter(df,POS<=zoomLen)} #subsetting condition to follow for zoom plots
 	ap<-ggplot(df,aes(x=POS,y=composition,fill=nt))+
 		geom_area()+ #area plot
-		theme_bw()+ #remove grey background
+		# theme_bw()+ #remove grey background
 		geom_line(aes(y=avgQ),color="black",alpha=0.8) #avg Phred score
-	# ap<-ap+theme(title=element_blank(),legend.position="none") #remove all title elements and legend
+	# ap<-ap+theme(title=element_blank(),legend.position="none") #removes all title elements and legend
 	if(is.null(zoomLen)) #condition to skip for zoom plots
 		{
 		ap<-ap+geom_line(aes(y=bases/max(bases)*100),color="red")+ #make normalized length freq as line
-			scale_y_continuous(sec.axis=sec_axis(~.*max(df$bases)/100,name="Frequency")) #rev-norm freq for axis
+			scale_y_continuous(sec.axis=sec_axis(~.*max(df$bases)/100,name="Frequency"))+ #rev-norm freq for axis
+			theme(axis.line.y.right=element_line(color="red"),axis.ticks.y.right=element_line(color="red"),axis.text.y.right=element_text(color="red")) #changes secondary (right) axis line, ticks, text to red
 		}
 	ap<-ap+theme(title=element_blank(),legend.position="none") #remove all title elements and legend
 	return(ap)
@@ -43,11 +45,12 @@ AreaPlot<-function(df,zoomLen=NULL)
 ###User defined parameters
 zoom5Len<-300
 zoom3Len<-100
-fastqFile<-"ds2.fastq.gz" #fastq file to compute compositions on
+inFile<-"ds2.fastq.gz" #fastq file to compute compositions on
 rawQualFile<-"ds2-qual.txt" #file with normal base compositions; 5' aligned
 revQualFile<-"ds2Compl-qual.txt" #file with reverse complement base compositions; 3' aligned
 percentFilter<-0.005 #percent bases to filter until; parameter that avoids rendering noise at the end; chosen by the user
-outFile<-"ds2-fastqCompositions.png" #file to export graphs in
+outFile<-sub("\\.f[ast]{0,3}(a|q)(\\.gz)?","-fast\\1Compositions.png",inFile,perl=T) #file to export graphs in
+
 
 ###Process regular compositions
 ##Process full base compositons for center plots
@@ -77,4 +80,4 @@ areaArranged<-grid.arrange(areaRawComp4ntZoom5,areaRawComp4nt,areaRevComp4ntZoom
 # leftPlots<-grid.arrange(areaRawComp4ntZoom5,areaRawComp2ntZoom5,ncol=1,top=textGrob(label="Aligned 5\' end"))
 # rightPlots<-grid.arrange(areaRevComp4ntZoom3,areaRevComp2ntZoom3,ncol=1,top=textGrob(label="Aligned 3\' end"))
 
-ggsave(outFile,plot=areaArranged)
+ggsave(outFile,plot=areaArranged,height=8,width=16,units="cm")
