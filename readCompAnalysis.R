@@ -30,7 +30,7 @@ AreaPlot<-function(df,zoomLen=NULL)
 	ap<-ggplot(df,aes(x=POS,y=composition,fill=nt))+
 		geom_area()+ #area plot
 		# theme_bw()+ #remove grey background
-		geom_line(aes(y=avgQ),color="black",alpha=0.8) #avg Phred score
+	  geom_line(aes(y=avgQ),alpha=0.8) #avg Phred score; black by default
 	# ap<-ap+theme(title=element_blank(),legend.position="none") #removes all title elements and legend
 	if(is.null(zoomLen)) #condition to skip for zoom plots
 		{
@@ -75,9 +75,17 @@ areaRevComp2ntZoom3<-AreaPlot(revComp2nt,zoom3Len)
 areaRevComp2ntZoom3<-areaRevComp2ntZoom3+scale_x_reverse()
 
 ###Setting graphs in figure
-areaArranged<-grid.arrange(areaRawComp4ntZoom5,areaRawComp4nt,areaRevComp4ntZoom3,areaRawComp2ntZoom5,areaRawComp2nt,areaRevComp2ntZoom3,nrow=2,ncol=3)
+leftPlots<-arrangeGrob(areaRawComp4ntZoom5,areaRawComp2ntZoom5,ncol=1,top=textGrob("Aligned 5' beginning",gp=gpar(fontface=2,fontsize=14)))
+centerPlots<-arrangeGrob(areaRawComp4nt,areaRawComp2nt,ncol=1,top=textGrob(paste("Compositions to length",dim(rawComp)[1],"aligned 5'"),gp=gpar(fontface=2,fontsize=14)),
+                         right=textGrob(label="Read frequency (NT per position)",rot=90,gp=gpar(fontface=2,fontsize=14,col="red")))
+rightPlots<-arrangeGrob(areaRevComp4ntZoom3,areaRevComp2ntZoom3,ncol=1,top=textGrob("Aligned 3' ending",gp=gpar(fontface=2,fontsize=14)))
+areaArranged<-grid.arrange(leftPlots,centerPlots,rightPlots,ncol=3,widths=c(1,2,1),
+                           top=textGrob(label="Main Title",gp=gpar(fontface=2,fontsize=20)),
+                           left=textGrob(label="Nucleotide composition (0-100), Average Phred score",rot=90,gp=gpar(fontface=2,fontsize=20)),
+                           bottom=textGrob(label="Read length (NT positions)",gp=gpar(fontface=2,fontsize=20)))
+# areaArranged<-grid.arrange(areaRawComp4ntZoom5,areaRawComp4nt,areaRevComp4ntZoom3,areaRawComp2ntZoom5,areaRawComp2nt,areaRevComp2ntZoom3,nrow=2,ncol=3)
 # centerPlots<-grid.arrange(areaRawComp4nt,areaRawComp2nt,ncol=1,top=textGrob(label="Aligned 5', length 1-XX nt"))
 # leftPlots<-grid.arrange(areaRawComp4ntZoom5,areaRawComp2ntZoom5,ncol=1,top=textGrob(label="Aligned 5\' end"))
 # rightPlots<-grid.arrange(areaRevComp4ntZoom3,areaRevComp2ntZoom3,ncol=1,top=textGrob(label="Aligned 3\' end"))
 
-ggsave(outFile,plot=areaArranged,height=8,width=16,units="cm")
+ggsave(outFile,plot=areaArranged,height=8,width=16,units="in")
