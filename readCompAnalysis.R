@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 
 startTime<-Sys.time()
-packages<-c("tidyverse","grid","gridExtra","argparser")
+packages<-c("tidyverse","grid","gridExtra","argparser","lubridate")
 tmp<-lapply(packages,function(x) suppressPackageStartupMessages(require(x,character.only=T)))
 # options(readr.num_columns=0) #suppress runtime output for read_delim and other functions
 
@@ -92,7 +92,7 @@ AreaPlot<-function(df,zoomLen=NULL)
 #### Main ####
 
 ## Status message that records time for libraries to load. Feel free to uncomment the following line if you want to see it.
-# cat("[",trunc(Sys.time()-startTime),"s] Libraries loaded\n")
+# cat("[",round(time_length(Sys.time()-startTime,unit="second"),0),"s] Libraries loaded\n",sep="")
 
 ### User defined parameters
 
@@ -115,7 +115,7 @@ zoom3Len<-args$ezoom
 verbose<-args$verbose
 outFile<-sub("\\.f[ast]{0,3}(a|q)(\\.gz)?","-fast\\1Compositions.png",seqFile,perl=T) #file to export graphs in
 if(!is.na(args$outfile)){outFile<-args$outfile} #override filename if supplied by user
-if(isTRUE(verbose)){cat("[",trunc(Sys.time()-startTime),"s] Libraries loaded and user parameters set\n")}
+if(isTRUE(verbose)){cat("[",round(time_length(Sys.time()-startTime,unit="second"),0),"s] Libraries loaded and user parameters set\n",sep="")}
 
 ### Compute nucleotide compositions, quality estimates and generate plots
 
@@ -127,12 +127,12 @@ rawComp4nt$nt<-factor(rawComp4nt$nt,levels=c("A","G","C","T","N")) #setting the 
 areaRawComp4nt<-AreaPlot(rawComp4nt) #plotting full area graph with 4 nt
 rawComp2nt<-gather(rawComp,key=nt,value=composition,c(AT,GC,N)) #reorders AT, GC in long format for ggplot
 areaRawComp2nt<-AreaPlot(rawComp2nt) #plotting full area graph with combination compositions
-if(isTRUE(verbose)){cat("[",trunc(Sys.time()-startTime),"s] Forward full compositions calculated and graphed\n")}
+if(isTRUE(verbose)){cat("[",round(time_length(Sys.time()-startTime,unit="second"),0),"s] Forward full compositions calculated and graphed\n",sep="")}
 
 ## Process 5' end compositions for left zoomed-in plots
 areaRawComp4ntZoom5<-AreaPlot(rawComp4nt,zoom5Len)
 areaRawComp2ntZoom5<-AreaPlot(rawComp2nt,zoom5Len)
-if(isTRUE(verbose)){cat("[",trunc(Sys.time()-startTime),"s] Forward zoomed compositions calculated and graphed\n")}
+if(isTRUE(verbose)){cat("[",round(time_length(Sys.time()-startTime,unit="second"),0),"s] Forward zoomed compositions calculated and graphed\n",sep="")}
 
 ## Process reverse complement compositions for right zoomed-in plots
 # revComp<-Preprocess(revQualFile,percentFilter) #reading and filtering reverse complement compositions
@@ -144,7 +144,7 @@ areaRevComp4ntZoom3<-areaRevComp4ntZoom3+scale_x_reverse()
 revComp2nt<-gather(revComp,key=nt,value=composition,c(AT,GC,N)) #reorders AT, GC in long format for ggplot
 areaRevComp2ntZoom3<-AreaPlot(revComp2nt,zoom3Len)
 areaRevComp2ntZoom3<-areaRevComp2ntZoom3+scale_x_reverse()
-if(isTRUE(verbose)){cat("[",trunc(Sys.time()-startTime),"s] Reverse zoomed compositons calculated and graphed\n")}
+if(isTRUE(verbose)){cat("[",round(time_length(Sys.time()-startTime,unit="second"),0),"s] Reverse zoomed compositons calculated and graphed\n",sep="")}
 
 ### Exporting graphs in figure
 
@@ -163,8 +163,8 @@ areaArranged<-grid.arrange(leftPlots,centerPlots,rightPlots,ncol=3,widths=c(1,2,
 # centerPlots<-grid.arrange(areaRawComp4nt,areaRawComp2nt,ncol=1,top=textGrob(label="Aligned 5', length 1-XX nt"))
 # leftPlots<-grid.arrange(areaRawComp4ntZoom5,areaRawComp2ntZoom5,ncol=1,top=textGrob(label="Aligned 5\' end"))
 # rightPlots<-grid.arrange(areaRevComp4ntZoom3,areaRevComp2ntZoom3,ncol=1,top=textGrob(label="Aligned 3\' end"))
-if(isTRUE(verbose)){cat("[",trunc(Sys.time()-startTime),"s] All graphs prepared in grid\n")}
+if(isTRUE(verbose)){cat("[",round(time_length(Sys.time()-startTime,unit="second"),0),"s] All graphs prepared in grid\n",sep="")}
 
 ## Export graphs to file
 ggsave(outFile,plot=areaArranged,height=200,width=400,units="mm")
-if(isTRUE(verbose)){cat("[",trunc(Sys.time()-startTime),"s] Graph grid written to file\n")}
+if(isTRUE(verbose)){cat("[",round(time_length(Sys.time()-startTime,unit="second"),0),"s] Graph grid written to file\n",sep="")}
