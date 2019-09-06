@@ -12,3 +12,13 @@ This script is specifically tailored for running by Dickson Lab members but can 
 - A quick use case: `sbatch --export=ALL,FQDIR="../MiSeq_M02127_2019/" --job-name=ardsLungs mothurGreatLakes.sh`
 
 ---
+
+[`summarizeFastq.pl`](./summarizeFastq.pl) Summarizes a fastq file uisng seqtk.
+
+- Usage with no arguments and full help with `-h`.
+- Will process gzipped fastq (.fastq.gz) the same way.
+- Multiple files can be submitted as positional arguments.
+- Code is meant for serial execution but can be parallelized on multiple files using GNU Parallel.
+- Examples include all use cases.
+
+---
