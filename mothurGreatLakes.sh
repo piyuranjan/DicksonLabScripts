@@ -9,6 +9,7 @@
 ##  Mothur MiSeq_SOP (https://www.mothur.org/wiki/MiSeq_SOP) very closely.
 ##
 ## Usage:
+##  This script needs to be copied in an empty work directory and submitted with sbatch.
 ##  Newbie: Submit a batch of fastq.gz from 16S Illumina run; recommended
 ##    only for a small run
 ##    sbatch mothurGreatLakes.sh
