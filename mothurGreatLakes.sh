@@ -121,12 +121,27 @@ cp $MOTHUROUTPREFIX.trim.contigs.good.unique.good.filter.unique.precluster.pick.
 REP="$MOTHUROUTPREFIX.rep.fasta"
 cp $MOTHUROUTPREFIX.trim.contigs.good.unique.good.filter.unique.precluster.pick.opti_mcc.0.03.rep.fasta $REP
 MOTHURLOG=$(ls -1 mothur.*.logfile|tail -1)
-if [ -f "$SHARED" -a -f "$TAXONOMY" -a -f "$REP" ]; then
-	echo -e "Files after mothur processing are:\n- $SHARED \n- $TAXONOMY \n- $REP"
-	echo -e "Job logs, after this job finishes can be found in \n- $SLURM_JOB_NAME-$SLURM_JOB_ID.out \n- $SLURM_JOB_NAME-$SLURM_JOB_ID.err"
-	echo -e "Mothur log for this run can be found in $MOTHURLOG"
+LOG="$MOTHUROUTPREFIX.log"
+cp $MOTHURLOG $LOG
+if [ -f "$SHARED" -a -f "$TAXONOMY" -a -f "$REP" -a -f "$LOG" ]; then
+	FINISH="\n------\
+	\n\nThis job has finished successfully: $SLURM_JOB_NAME\
+	\n\nDirect Mothur log for this run can be found in: $MOTHURLOG\
+	\n\nJob logs, after this job finishes can be found in:\
+	\n- $SLURM_JOB_NAME-$SLURM_JOB_ID.out\
+	\n- $SLURM_JOB_NAME-$SLURM_JOB_ID.err\
+	\n\n---\
+	\n\nThis Mothur run was processed with the following database paths:\
+	\n- $SILVAPATH \n- $RDPREFPATH \n- $RDPTAXPATH\
+	\n\nFiles after mothur processing are:\
+	\n- $SHARED \n- $TAXONOMY \n- $REP \n- $LOG"
+	echo -e $FINISH >>$LOG
+	echo -e $FINISH
 else
-	echo -e "Somthing has gone wrong with the mothur execution. Please check \n- $SLURM_JOB_NAME-$SLURM_JOB_ID.out \n- $SLURM_JOB_NAME-$SLURM_JOB_ID.err \n- $MOTHURLOG"
+	ERR="\n------\
+	\n\nERROR: Somthing has gone wrong with the mothur execution! Please check:\
+	\n- $SLURM_JOB_NAME-$SLURM_JOB_ID.out \n- $SLURM_JOB_NAME-$SLURM_JOB_ID.err \n- $MOTHURLOG"
+	echo -e $ERR
 fi
 
 
