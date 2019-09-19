@@ -1,6 +1,13 @@
 # DicksonLabScripts
 Scripts for everyday work in the Dickson lab
 
+### Setup
+
+- Clone the repository from GitHub: `git clone https://github.com/piyuranjan/DicksonLabScripts.git`
+- Place on your system path (optional): `export PATH=~/Path/To/Folder/DicksonLabScripts:$PATH`
+- Make the system path addition permanent (optional): `echo "export PATH=~/Path/To/Folder/DicksonLabScripts:$PATH" >>~/.bashrc`
+- Update the repository (maybe in a year, at least ;-) ): `cd ~/Path/To/Folder/DicksonLabScripts/ && git pull`
+
 ---
 
 [`mothurGreatLakes.sh`](./mothurGreatLakes.sh) A SLURM shell script for running mothur on Great Lakes.
