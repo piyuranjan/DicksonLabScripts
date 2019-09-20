@@ -114,14 +114,16 @@ get.current();\
 "|perl -pe 's/^.*Linux/Linux/;'
 
 ### Copy important files with more legible names
-SHARED="$MOTHUROUTPREFIX.shared"
-cp $MOTHUROUTPREFIX.trim.contigs.good.unique.good.filter.unique.precluster.pick.opti_mcc.shared $SHARED
-TAXONOMY="$MOTHUROUTPREFIX.cons.taxonomy"
-cp $MOTHUROUTPREFIX.trim.contigs.good.unique.good.filter.unique.precluster.pick.opti_mcc.0.03.cons.taxonomy $TAXONOMY
-REP="$MOTHUROUTPREFIX.rep.fasta"
-cp $MOTHUROUTPREFIX.trim.contigs.good.unique.good.filter.unique.precluster.pick.opti_mcc.0.03.rep.fasta $REP
+OUTDIR="ResultFiles"
+mkdir $OUTDIR
+SHARED="$OUTDIR/$MOTHUROUTPREFIX.shared"
+cp $MOTHUROUTPREFIX.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.shared $SHARED
+TAXONOMY="$OUTDIR/$MOTHUROUTPREFIX.cons.taxonomy"
+cp $MOTHUROUTPREFIX.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.0.03.cons.taxonomy $TAXONOMY
+REP="$OUTDIR/$MOTHUROUTPREFIX.rep.fasta"
+cp $MOTHUROUTPREFIX.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.0.03.rep.fasta $REP
 MOTHURLOG=$(ls -1 mothur.*.logfile|tail -1)
-LOG="$MOTHUROUTPREFIX.log"
+LOG="$OUTDIR/$MOTHUROUTPREFIX.log"
 cp $MOTHURLOG $LOG
 if [ -f "$SHARED" -a -f "$TAXONOMY" -a -f "$REP" -a -f "$LOG" ]; then
 	FINISH="\n------\
@@ -141,6 +143,7 @@ else
 	ERR="\n------\
 	\n\nERROR: Somthing has gone wrong with the mothur execution! Please check:\
 	\n- $SLURM_JOB_NAME-$SLURM_JOB_ID.out \n- $SLURM_JOB_NAME-$SLURM_JOB_ID.err \n- $MOTHURLOG"
+	echo -e $ERR >>$LOG
 	echo -e $ERR
 fi
 
