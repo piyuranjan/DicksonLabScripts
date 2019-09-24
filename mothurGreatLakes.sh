@@ -42,8 +42,8 @@ if [[ $SLURM_JOB_NODELIST ]] ; then
 	scontrol show hostnames $SLURM_JOB_NODELIST
 fi
 ### Adding Conda init to subshell
-if [ -f "$CONDA_PREFIX/etc/profile.d/conda.sh" ]; then
-	. "$CONDA_PREFIX/etc/profile.d/conda.sh"
+if [ -f "$(conda info --base)/etc/profile.d/conda.sh" ]; then
+	. "$(conda info --base)/etc/profile.d/conda.sh"
 fi
 
 ## Job Commands ##
