@@ -87,7 +87,7 @@ ls -1 *.fastq|perl -ne 'chomp;$n=$_;$n=~s/-//g;print `mv $_ $n\n`;' #Rename all 
 /usr/bin/time -f "\nCommand stats:\nProc:\tElapsed Time = %E,\tPerc CPU = %P,\nMem:\tAvg Total Mem = %KKB,\tPeak Mem = %MKB,\nExit Status: %x" \
 mothur "#\
 set.current(inputdir=.,outputdir=.,processors=$PROC);\
-make.file(type=fastq, prefix=$MOTHUROUTPREFIX);\
+make.file(type=fastq, prefix=$MOTHUROUTPREFIX, delim=*);\
 make.contigs(file=$MOTHUROUTPREFIX.files);\
 summary.seqs();\
 screen.seqs(fasta=current, maxambig=0, maxlength=275);\
