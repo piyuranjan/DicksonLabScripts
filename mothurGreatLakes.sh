@@ -20,7 +20,7 @@
 ## SBatch preamble ##
 
 #SBATCH --job-name=mothurGL
-#SBATCH --account=rodickso
+#SBATCH --account=rodickso1
 #SBATCH --mail-type=ALL
 #SBATCH --output=%x-%j.out
 #SBATCH --error=%x-%j.err
@@ -117,11 +117,11 @@ get.current();\
 OUTDIR="ResultFiles"
 mkdir $OUTDIR
 SHARED="$OUTDIR/$MOTHUROUTPREFIX.shared"
-cp $MOTHUROUTPREFIX.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.shared $SHARED
+cp $MOTHUROUTPREFIX.trim.contigs.good.unique.good.filter.unique.precluster.pick*.opti_mcc.shared $SHARED
 TAXONOMY="$OUTDIR/$MOTHUROUTPREFIX.cons.taxonomy"
-cp $MOTHUROUTPREFIX.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.0.03.cons.taxonomy $TAXONOMY
+cp $MOTHUROUTPREFIX.trim.contigs.good.unique.good.filter.unique.precluster.pick*.opti_mcc.0.03.cons.taxonomy $TAXONOMY
 REP="$OUTDIR/$MOTHUROUTPREFIX.rep.fasta"
-cp $MOTHUROUTPREFIX.trim.contigs.good.unique.good.filter.unique.precluster.pick.pick.opti_mcc.0.03.rep.fasta $REP
+cp $MOTHUROUTPREFIX.trim.contigs.good.unique.good.filter.unique.precluster.pick*.opti_mcc.0.03.rep.fasta $REP
 MOTHURLOG=$(ls -1 mothur.*.logfile|tail -1)
 LOG="$OUTDIR/$MOTHUROUTPREFIX.log"
 cp $MOTHURLOG $LOG
