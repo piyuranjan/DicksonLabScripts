@@ -125,9 +125,10 @@ cp $MOTHUROUTPREFIX.trim.contigs.good.unique.good.filter.unique.precluster.pick*
 MOTHURLOG=$(ls -1 mothur.*.logfile|tail -1)
 LOG="$OUTDIR/$MOTHUROUTPREFIX.log"
 cp $MOTHURLOG $LOG
+DT=$(date '+%Y-%m-%d %T %Z')
 if [ -f "$SHARED" -a -f "$TAXONOMY" -a -f "$REP" -a -f "$LOG" ]; then
 	FINISH="\n------\
-	\n\nThis job has finished successfully: $SLURM_JOB_NAME\
+	\n\nJob finished successfully at $DT: $SLURM_JOB_NAME\
 	\n\nDirect Mothur log for this run can be found in: $MOTHURLOG\
 	\n\nJob logs, after this job finishes can be found in:\
 	\n- $SLURM_JOB_NAME-$SLURM_JOB_ID.out\
@@ -141,6 +142,7 @@ if [ -f "$SHARED" -a -f "$TAXONOMY" -a -f "$REP" -a -f "$LOG" ]; then
 	echo -e $FINISH
 else
 	ERR="\n------\
+	\n\nJob finished at $DT: $SLURM_JOB_NAME\
 	\n\nERROR: Somthing has gone wrong with the mothur execution! Please check:\
 	\n- $SLURM_JOB_NAME-$SLURM_JOB_ID.out \n- $SLURM_JOB_NAME-$SLURM_JOB_ID.err \n- $MOTHURLOG"
 	echo -e $ERR >>$LOG
