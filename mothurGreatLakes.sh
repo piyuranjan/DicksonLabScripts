@@ -81,7 +81,7 @@ mothur -v|perl -pe 's/^.*Linux/Linux/;'
 
 ### Extract files and prepare them for use
 parallel -j $PROC 'pigz -dc {} >{/.}' ::: $FQDIR/*.fastq.gz #Will extract .gz files in parallel to PWD
-ls -1 *.fastq|perl -ne 'chomp;$n=$_;$n=~s/-//g;print `mv $_ $n\n`;' #Rename all fastq to remove '-' from name
+ls -1 *.fastq|perl -ne 'chomp;$n=$_;$n=~s/-/_/g;print `mv $_ $n\n`;' #Rename all fastq to remove '-' from name
 
 ### Execute the full Mothur workload
 /usr/bin/time -f "\nCommand stats:\nProc:\tElapsed Time = %E,\tPerc CPU = %P,\nMem:\tAvg Total Mem = %KKB,\tPeak Mem = %MKB,\nExit Status: %x" \
