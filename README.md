@@ -32,11 +32,9 @@ $ wget https://raw.githubusercontent.com/piyuranjan/DicksonLabScripts/main/<scri
 
 After pulling on-demand, scripts will need to be addressed with their path for execution.
 
-## Scripts
+---
 
-
-
-### [`mothurGreatLakes.sh`](./mothurGreatLakes.sh)  
+### [`mothurGreatLakes.sh`](./mothurGreatLakes.sh)
 
 A SLURM shell script for running `mothur` on Great Lakes.
 
@@ -49,20 +47,18 @@ Go to the [Wiki page](https://github.com/piyuranjan/DicksonLabScripts/wiki/mothu
 - Copy the script in an empty work directory (preferably in a separate location than the 16S fastq) on the scratch filesystem on the Great Lakes cluster.
 - Execute with sbatch as: `sbatch --export=ALL,FQDIR="<path/to/fastq/>" -J <jobName> mothurGreatLakes.sh`
 
+---
 
-
-### [`summarizeFastq.pl`](./summarizeFastq.pl)  
+### [`summarizeFastq.pl`](./summarizeFastq.pl)
 
 Summarize fastq file[s] using `seqtk`.
 
 Features:
 
 - Will process gzipped fastq (*.fastq.gz).
-
 - Multiple fastq can be submitted as positional arguments.
-
 - Can be parallelized on multiple files using GNU `parallel`.
-
 - Examples are included that demonstrate use cases.
 
-  
+---
+
