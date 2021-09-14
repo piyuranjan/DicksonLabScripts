@@ -32,13 +32,11 @@ $ wget https://raw.githubusercontent.com/piyuranjan/DicksonLabScripts/main/<scri
 
 After pulling on-demand, scripts will need to be addressed with their path for execution.
 
-
-
----
+## Scripts
 
 
 
-[`mothurGreatLakes.sh`](./mothurGreatLakes.sh)  
+### [`mothurGreatLakes.sh`](./mothurGreatLakes.sh)  
 
 A SLURM shell script for running `mothur` on Great Lakes.
 
@@ -53,11 +51,7 @@ Go to the [Wiki page](https://github.com/piyuranjan/DicksonLabScripts/wiki/mothu
 
 
 
----
-
-
-
-[`summarizeFastq.pl`](./summarizeFastq.pl)  
+### [`summarizeFastq.pl`](./summarizeFastq.pl)  
 
 Summarize fastq file[s] using `seqtk`.
 
@@ -72,6 +66,3 @@ Features:
 - Examples are included that demonstrate use cases.
 
   
-
----
-
