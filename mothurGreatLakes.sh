@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ################################################################################
 ## mothurGreatLakes.sh
@@ -13,7 +13,7 @@
 ##  use this script.
 ##
 ## Author: piyuranjan\@gmail.com
-## Source: https://github.com/piyuranjan/DicksonLabScripts/blob/master/mothurGreatLakes.sh
+## Source: https://github.com/piyuranjan/DicksonLabScripts/blob/main/mothurGreatLakes.sh
 ## Wiki: https://github.com/piyuranjan/DicksonLabScripts/wiki/mothurGreatLakes.sh
 ################################################################################
 
@@ -36,54 +36,54 @@
 
 ## End SBatch Preamble ##
 
-### Listing compute nodes allocated to the job
+## List compute nodes allocated to the job
 if [[ $SLURM_JOB_NODELIST ]] ; then
 	echo "Running on"
 	scontrol show hostnames $SLURM_JOB_NODELIST
 fi
-### Adding Conda init to subshell
+## Add Conda init to subshell
 if [ -f "$(conda info --base)/etc/profile.d/conda.sh" ]; then
 	. "$(conda info --base)/etc/profile.d/conda.sh"
 fi
 
 ## Job Commands ##
 
-### Variables that can be overridden on the command line
-if [ -z $FQDIR ]; then #set fastq directory for finding MiSeq files
+# Variables that can be overridden on the command line
+if [ -z $FQDIR ]; then # set fastq directory for finding MiSeq files
 	FQDIR='.'
 else
 	FQDIR=${FQDIR%/}
 fi
-if [ -z $PROC ] ; then #Set procs/threads for the following commands to use; default: Job-CPUs
+if [ -z $PROC ] ; then # set procs/threads for the following commands to use; default: Job-CPUs
 	PROC=$SLURM_CPUS_PER_TASK
 fi
-if [ -z $MOTHUROUTPREFIX ]; then #Set Mothur output file prefix; default: Job-Name
+if [ -z $MOTHUROUTPREFIX ]; then # set Mothur output file prefix; default: Job-Name
 	MOTHUROUTPREFIX=$SLURM_JOB_NAME
 fi
-if [ -z $SILVAPATH ]; then #Set Silva database path
+if [ -z $SILVAPATH ]; then # set Silva database path
 	SILVAPATH='/nfs/turbo/umms-rodickso/Databases/MothurDB/SilvaV132/silva.nr_v132.regionV4.align'
 fi
-if [ -z $RDPREFPATH ]; then #Set RDP database fasta path
+if [ -z $RDPREFPATH ]; then # set RDP database fasta path
 	RDPREFPATH='/nfs/turbo/umms-rodickso/Databases/MothurDB/RDP16/trainset16_022016.rdp.fasta'
 fi
-if [ -z $RDPTAXPATH ]; then #Set RDP database taxonomy path
+if [ -z $RDPTAXPATH ]; then # set RDP database taxonomy path
 	RDPTAXPATH='/nfs/turbo/umms-rodickso/Databases/MothurDB/RDP16/trainset16_022016.rdp.tax'
 fi
 
-### Activate Mothur and check the package version
-conda activate envMothur #Deactivate this line if you have Mothur installed differently and don't like it throwing an error statement in your logs. It will not impede the job though.
+# Activate Mothur and check the package version
+conda activate envMothur # Comment this line if you have Mothur installed differently and don't like it throwing an error statement in your logs. It will not impede the job though.
 which mothur
-if [[ $? -ne 0 ]]; then #Kill job if mothur cannot be seen on PATH.
+if [[ $? -ne 0 ]]; then # kill job if mothur cannot be seen on PATH.
 	>&2 echo "[ERROR] Problem finding mothur."
 	exit 1
 fi
 mothur -v|perl -pe 's/^.*Linux/Linux/;'
 
-### Extract files and prepare them for use
-parallel -j $PROC 'pigz -dc {} >{/.}' ::: $FQDIR/*.fastq.gz #Will extract .gz files in parallel to PWD
-ls -1 *.fastq|perl -ne 'chomp;$n=$_;$n=~s/-/_/g;if($_ ne $n){print `mv $_ $n\n`;}' #Rename all fastq to remove '-' from name
+# Extract files and prepare them for use
+parallel -j $PROC 'pigz -dc {} >{/.}' ::: $FQDIR/*.fastq.gz # extract .gz files in parallel to PWD
+ls -1 *.fastq|perl -ne 'chomp;$n=$_;$n=~s/-/_/g;if($_ ne $n){print `mv $_ $n\n`;}' # rename all fastq to remove '-' from name
 
-### Execute the full Mothur workload
+# Execute the full Mothur workload
 /usr/bin/time -f "\nCommand stats:\nProc:\tElapsed Time = %E,\tPerc CPU = %P,\nMem:\tAvg Total Mem = %KKB,\tPeak Mem = %MKB,\nExit Status: %x" \
 mothur "#\
 set.current(inputdir=.,outputdir=.,processors=$PROC);\
@@ -113,7 +113,7 @@ get.oturep(column=current, count=current, fasta=current, list=current);\
 get.current();\
 "|perl -pe 's/^.*Linux/Linux/;'
 
-### Copy important files with more legible names
+# Copy important files with more legible names
 OUTDIR="ResultFiles"
 mkdir $OUTDIR
 SHARED="$OUTDIR/$MOTHUROUTPREFIX.shared"
