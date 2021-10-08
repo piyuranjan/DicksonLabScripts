@@ -47,6 +47,8 @@ Go to the [Wiki page](https://github.com/piyuranjan/DicksonLabScripts/wiki/mothu
 - Copy the script in an empty work directory (preferably in a separate location than the 16S fastq) on the scratch filesystem on the Great Lakes cluster.
 - Execute with sbatch as: `sbatch --export=ALL,FQDIR="<path/to/fastq/>" -J <jobName> mothurGreatLakes.sh`
 
+[`mothurGreatLakes_ghuff.sh`](./mothurGreatLakes_ghuff.sh) is the Huffnagle lab version of the same script. Directions to use are going to be the same over on the [Wiki page](https://github.com/piyuranjan/DicksonLabScripts/wiki/mothurGreatLakes.sh) except for modification of the filename.
+
 ---
 
 ### [`summarizeFastq.pl`](./summarizeFastq.pl)
