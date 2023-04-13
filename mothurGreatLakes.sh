@@ -20,7 +20,7 @@
 ## SBatch preamble ##
 
 #SBATCH --job-name=mothurGL
-#SBATCH --account=rodickso1
+##SBATCH --account=rodickso1
 #SBATCH --mail-type=ALL
 #SBATCH --output=%x-%j.out
 #SBATCH --error=%x-%j.err
